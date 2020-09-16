@@ -9,13 +9,14 @@ import kotlinx.coroutines.Dispatchers.IO
 import okhttp3.Dispatcher
 import java.lang.Exception
 
-class MainViewModel(private val mainRepository: MainRepository): ViewModel() {
-    fun getUsers() = liveData(Dispatchers.IO){
+class MainViewModel(private val mainRepository: MainRepository) : ViewModel() {
+
+    fun getUsers() = liveData(Dispatchers.IO) {
         emit(Resource.loading(data = null))
         try {
             emit(Resource.success(data = mainRepository.getUsers()))
-        } catch (ex: Exception) {
-            emitSource(Resource.error(data = null, message = ex.message ?: "Error Occurred!"))
+        } catch (exception: Exception) {
+            emit(Resource.error(data = null, message = exception.message ?: "Error Occurred!"))
         }
     }
 }
